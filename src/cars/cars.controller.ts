@@ -1,11 +1,12 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Param, ParseIntPipe } from '@nestjs/common';
 import { CarsService } from './cars.service';
 
 @Controller('cars')
 export class CarsController {
-  constructor(private readonly carsService: CarsService){}
+  constructor(private readonly carsService: CarsService) {}
+
   @Post()
-  getCars(@Body() body: any) {
-    return this.carsService.findNearbyCars(body.coords)
+  getCars(@Body('coords') coords: any, @Body('radius') radius?: number) {
+    return this.carsService.findNearbyCars(coords, radius);
   }
 }

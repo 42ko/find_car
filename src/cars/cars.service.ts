@@ -3,10 +3,9 @@ import axios from 'axios';
 
 @Injectable()
 export class CarsService {
-  async findNearbyCars(coords): Promise<any[]> {
+  async findNearbyCars(coords, radius): Promise<any> {
     let lat = coords[0]
     let lng = coords[1]
-    let radius = 1
     const nearbyCars = [];
 
     for (let i = 0; i < 5; i++) {
