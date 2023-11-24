@@ -64,6 +64,29 @@ function init() {
   function handleCarsResponse(cars) {
     console.log('Машины успешно получены:', cars);
 
+    myMap.geoObjects.each(function (geoObject) {
+      if (geoObject !== myPlacemark) {
+        myMap.geoObjects.remove(geoObject);
+      }
+    });
+
+    cars.forEach(function (car) {
+      var carPlacemark = createCarPlacemark({ lat: car.lat, lng: car.lng });
+      myMap.geoObjects.add(carPlacemark);
+    });
+  }
+
+  function createCarPlacemark(coords) {
+    return new ymaps.Placemark(
+      coords,
+      {
+        iconCaption: 'Машина',
+      },
+      {
+        preset: 'islands#redAutoIcon',
+        draggable: false,
+      },
+    );
   }
 
   function sendCoordinatesToServer(coords) {
@@ -77,6 +100,7 @@ function init() {
       .then((response) => response.json())
       .then(handleCarsResponse)
       .catch((error) =>
-        console.error('Ошибка при отправке координат на сервер:', error),      );
+        console.error('Ошибка при отправке координат на сервер:', error),
+      );
   }
 }
